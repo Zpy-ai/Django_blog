@@ -8,6 +8,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.models import User
 from django.db import transaction
 from django.contrib import messages
+import markdown
 
 def post_list(request):
     posts_list = Post.objects.order_by('-created_at')
@@ -28,10 +29,14 @@ def post_list(request):
 def home(request):
     # 获取最新的5篇文章
     latest_posts = Post.objects.order_by('-created_at')[:5]
+    # 对每篇文章的内容进行Markdown处理
+    for post in latest_posts:
+        post.content = markdown.markdown(post.content, extensions=['extra', 'codehilite'])
     return render(request, 'blog/home.html', {'latest_posts': latest_posts})
 
 def post_detail(request, post_id):
     post = get_object_or_404(Post, id=post_id)
+    post.content = markdown.markdown(post.content, extensions=['extra', 'codehilite'])
     return render(request, 'blog/post_detail.html', {'post': post})
 
 def category(request, category_name):

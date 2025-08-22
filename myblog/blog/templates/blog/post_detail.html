@@ -138,6 +138,78 @@
             color: #34495e;
         }
         
+        /* Markdown代码块样式 */
+        .post-content pre {
+            background-color: #2c3e50;
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .post-content code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #e0e0e0;
+        }
+        
+        .post-content pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+        
+        .post-content :not(pre) > code {
+            background-color: #f8f9fa;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            border: 1px solid #e9ecef;
+        }
+        
+        /* Markdown标题样式 */
+        .post-content h1, .post-content h2, .post-content h3, 
+        .post-content h4, .post-content h5, .post-content h6 {
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .post-content h1 {
+            font-size: 2rem;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 0.5rem;
+        }
+        
+        .post-content h2 {
+            font-size: 1.75rem;
+            border-bottom: 1px solid #3498db;
+            padding-bottom: 0.3rem;
+        }
+        
+        .post-content h3 {
+            font-size: 1.5rem;
+        }
+        
+        /* Markdown列表样式 */
+        .post-content ul, .post-content ol {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+        
+        .post-content li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Markdown引用块样式 */
+        .post-content blockquote {
+            border-left: 4px solid #3498db;
+            padding: 0.5rem 1rem;
+            margin: 1rem 0;
+            background-color: #f8f9fa;
+            border-radius: 0 4px 4px 0;
+        }
+        
         .post-tags { 
             margin-bottom: 2rem; 
         }
@@ -380,7 +452,7 @@
             </div>
             
             <div class="post-content">
-                <p>{{ post.content }}</p>
+                {{ post.content|safe }}
             </div>
             
             <div class="post-tags">

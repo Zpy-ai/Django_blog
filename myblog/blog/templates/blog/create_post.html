@@ -121,13 +121,24 @@
             font-weight: 500;
         }
         
-        .form-group input, .form-group textarea, .form-group select {
+        .form-group input, .form-group select {
             width: 100%;
             padding: 0.8rem;
             border: 1px solid #ccc;
             border-radius: 5px;
             box-sizing: border-box;
             transition: all 0.3s ease;
+        }
+        
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+            min-height: 300px;
+            resize: vertical;
         }
         
         .form-group input:focus, .form-group textarea:focus, .form-group select:focus {

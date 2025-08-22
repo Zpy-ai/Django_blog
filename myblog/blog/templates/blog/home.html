@@ -151,6 +151,15 @@
             color: #34495e;
         }
         
+        /* Markdown一级标题样式 */
+        .post-excerpt h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+        
         footer { 
             background: linear-gradient(90deg, #3498db, #2c3e50); 
             color: white; 
@@ -224,7 +233,7 @@
                             <h3 class="post-title">📝 <a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></h3>
                             <div class="post-meta">发布于 {{ post.created_at|date:"Y-m-d H:i" }}</div>
                             <div class="post-excerpt">
-                                <p>{{ post.content|truncatewords:5 }}</p>
+                                <p>{{ post.content|safe }}</p>
                             </div>
                         </div>
                     {% endfor %}
