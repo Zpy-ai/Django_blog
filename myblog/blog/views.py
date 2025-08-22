@@ -12,6 +12,9 @@ import markdown
 
 def post_list(request):
     posts_list = Post.objects.order_by('-created_at')
+    # 对每篇文章的内容进行Markdown处理
+    for post in posts_list:
+        post.content = markdown.markdown(post.content, extensions=['extra', 'codehilite'])
     paginator = Paginator(posts_list, 9)  # 每页显示5篇文章
     
     page = request.GET.get('page')
