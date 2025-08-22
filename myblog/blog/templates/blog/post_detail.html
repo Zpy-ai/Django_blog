@@ -445,7 +445,7 @@
             <div class="post-header">
                 <h1 class="post-title">{{ post.title }}</h1>
                 <div class="post-meta">
-                    <span>作者: ZPY</span> | 
+                    <span>作者: <a href="{% url 'profile' %}?user_id={{ post.author.id }}">{{ post.author.username }}</a></span> | 
                     <span>分类: <a href="/category/tech/">技术</a></span> | 
                     <span>{{ post.created_at|date:"Y-m-d" }}</span>
                 </div>

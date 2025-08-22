@@ -30,8 +30,8 @@ def post_list(request):
     return render(request, 'blog/post_list.html', {'posts': posts})
 
 def home(request):
-    # 获取最新的5篇文章
-    latest_posts = Post.objects.order_by('-created_at')[:5]
+    # 获取最新的5篇文章，并确保包含作者信息
+    latest_posts = Post.objects.select_related('author').order_by('-created_at')[:5]
     # 对每篇文章的内容进行Markdown处理
     for post in latest_posts:
         post.content = markdown.markdown(post.content, extensions=['extra', 'codehilite'])
@@ -72,35 +72,60 @@ def create_post(request):
 
 @login_required
 def profile(request):
-    try:
-        profile = request.user.userprofile
-    except UserProfile.DoesNotExist:
-        # 如果用户没有个人资料，则创建一个
-        profile = UserProfile.objects.create(user=request.user)
+    # 检查是否有user_id参数
+    user_id = request.GET.get('user_id')
     
-    if request.method == 'POST':
-        # 更新用户信息
-        email = request.POST.get('email')
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
+    if user_id:
+        # 查看其他用户的个人主页
+        user = get_object_or_404(User, id=user_id)
+        try:
+            profile = user.userprofile
+        except UserProfile.DoesNotExist:
+            # 如果用户没有个人资料，则创建一个
+            profile = UserProfile.objects.create(user=user)
         
-        if email is not None:
-            request.user.email = email
-        if first_name is not None:
-            request.user.first_name = first_name
-        if last_name is not None:
-            request.user.last_name = last_name
-        request.user.save()
+        # 获取该用户发布的所有博客
+        user_posts = Post.objects.filter(author=user).order_by('-created_at')
         
-        # 更新用户资料
-        bio = request.POST.get('bio')
-        if bio is not None:
-            profile.bio = bio
-        profile.save()
+        # 不允许编辑其他用户的资料
+        can_edit = False
+    else:
+        # 查看自己的个人主页
+        user = request.user
+        try:
+            profile = user.userprofile
+        except UserProfile.DoesNotExist:
+            # 如果用户没有个人资料，则创建一个
+            profile = UserProfile.objects.create(user=user)
         
-        return redirect('profile')
+        # 获取当前用户发布的所有博客
+        user_posts = Post.objects.filter(author=user).order_by('-created_at')
+        
+        can_edit = True
+        
+        if request.method == 'POST':
+            # 更新用户信息
+            email = request.POST.get('email')
+            first_name = request.POST.get('first_name')
+            last_name = request.POST.get('last_name')
+            
+            if email is not None:
+                user.email = email
+            if first_name is not None:
+                user.first_name = first_name
+            if last_name is not None:
+                user.last_name = last_name
+            user.save()
+            
+            # 更新用户资料
+            bio = request.POST.get('bio')
+            if bio is not None:
+                profile.bio = bio
+            profile.save()
+            
+            return redirect('profile')
     
-    return render(request, 'blog/profile.html', {'profile': profile})
+    return render(request, 'blog/profile.html', {'profile': profile, 'user_posts': user_posts, 'can_edit': can_edit, 'view_user': user})
 
 @login_required
 def edit_post(request, post_id):

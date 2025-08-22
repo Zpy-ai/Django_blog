@@ -218,33 +218,74 @@
     
     <div class="container">
         <div class="content">
+            {% if can_edit %}
             <div style="text-align: right; margin-bottom: 1rem;">
                 <form method="post" action="{% url 'logout' %}" style="display: inline;">
                     {% csrf_token %}
                     <button type="submit" style="background-color: #333; color: white; padding: 0.5rem 1rem; border: none; border-radius: 3px; cursor: pointer;">登出 ({{ user.username }})</button>
                 </form>
             </div>
-            <h2 style="text-align: center;">个人主页</h2>
+            {% endif %}
+            <h2 style="text-align: center;">{{ view_user.first_name }}的个人主页</h2>
+            
+            {% if can_edit %}
             <form method="post">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="username">用户名:</label>
-                    <input type="text" id="username" name="username" value="{{ user.username }}" readonly>
+                    <input type="text" id="username" name="username" value="{{ view_user.username }}" readonly>
                 </div>
                 <div class="form-group">
                     <label for="email">邮箱:</label>
-                    <input type="email" id="email" name="email" value="{{ user.email }}">
+                    <input type="email" id="email" name="email" value="{{ view_user.email }}">
                 </div>
                 <div class="form-group">
                     <label for="first_name">昵称:</label>
-                    <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}">
+                    <input type="text" id="first_name" name="first_name" value="{{ view_user.first_name }}">
                 </div>
                 <div class="form-group">
                     <label for="bio">个性签名:</label>
-                    <textarea id="bio" name="bio" rows="4">{{ user.profile.bio }}</textarea>
+                    <textarea id="bio" name="bio" rows="4">{{ profile.bio }}</textarea>
                 </div>
                 <button type="submit" class="btn">保存更改</button>
             </form>
+            {% else %}
+            <!-- 显示用户信息 -->
+            <div style="margin-bottom: 2rem;">
+                <div class="form-group">
+                    <label>用户名:</label>
+                    <input type="text" value="{{ view_user.username }}" readonly>
+                </div>
+                <div class="form-group">
+                    <label>昵称:</label>
+                    <input type="text" value="{{ view_user.first_name }}" readonly>
+                </div>
+                <div class="form-group">
+                    <label>个性签名:</label>
+                    <textarea rows="4" readonly>{{ profile.bio }}</textarea>
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- 用户博客列表 -->
+            <div style="margin-top: 3rem;">
+                <h3 style="text-align: center; margin-bottom: 1.5rem;">{{ view_user.first_name }}发布的博客</h3>
+                {% if user_posts %}
+                    <div style="display: flex; flex-wrap: wrap; gap: 15px; justify-content: flex-start;">
+                        {% for post in user_posts %}
+                        <div style="border: 1px solid #e0e0e0; padding: 1rem; margin-bottom: 1rem; flex: 0 1 100%; box-sizing: border-box; border-radius: 8px; background-color: rgba(255, 255, 255, 0.9); box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: all 0.3s ease;">
+                            <h4 style="margin-top: 0; margin-bottom: 0.5rem;"><a href="{% url 'post_detail' post.id %}" style="color: #2c3e50; text-decoration: none;">{{ post.title }}</a></h4>
+                            <div style="color: #7f8c8d; font-size: 0.85rem; margin-bottom: 0.8rem;">发布于 {{ post.created_at|date:"Y-m-d H:i" }}</div>
+                            <div style="line-height: 1.5; color: #34495e;">
+                                {{ post.content|truncatewords:30|safe }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p style="text-align: center; color: #7f8c8d;">该用户还没有发布任何博客。</p>
+                {% endif %}
+            </div>
         </div>
     </div>
     
