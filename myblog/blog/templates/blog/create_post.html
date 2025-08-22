@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>创建新文章</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <style>
+        /* 引入Google字体 */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+        
+        /* 基础样式 */
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            animation: fadeIn 0.8s ease-in;
+        }
+        
+        /* 页面加载动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* 头部样式 */
+        header {
+            background: linear-gradient(90deg, #3498db, #2c3e50);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            animation: slideDown 0.8s ease-out;
+        }
+        
+        /* 头部滑入动画 */
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+        
+        /* 导航栏样式 */
+        nav {
+            background-color: #2c3e50;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px; /* 圆角按钮 */
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        nav a:hover {
+            background-color: #666;
+            transform: translateY(-2px); /* 悬停时上移 */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* 悬停时添加阴影 */
+        }
+        
+        /* 容器样式 */
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 1rem;
+        }
+        
+        /* 内容区域样式 */
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 2.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        /* 内容区域动画 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* 创建文章头部样式 */
+        .create-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .create-title {
+            font-size: 2rem;
+            color: #333;
+            margin: 0;
+        }
+        
+        /* 表单组样式 */
+        .form-group {
+            margin-bottom: 1rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            border-color: #666;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(102, 102, 102, 0.2);
+        }
+        
+        /* 按钮样式 */
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background-color: #555;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        /* 页脚样式 */
+        footer {
+            background: linear-gradient(90deg, #333 0%, #222 100%);
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+        }
+        
+        /* 返回顶部按钮样式 */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: #333;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            font-size: 24px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+        }
+        
+        .back-to-top:hover {
+            background-color: #666;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>欢迎来到ZPY的博客</h1>
+    </header>
+    
+    <nav>
+        <a href="/">🏠 首页</a>
+        <a href="/posts/">📚 文章列表</a>
+        <a href="/about/">ℹ️ 关于</a>
+        <a href="/contact/">📞 联系</a>
+        {% if user.is_authenticated %}
+            <a href="/profile/">👤 个人主页</a>
+            <a href="/create/">📝 创建文章</a>
+        {% else %}
+            <a href="/login/">🔒 登录</a>
+            <a href="/register/">📋 注册</a>
+        {% endif %}
+    </nav>
+    
+    <div class="container">
+        <div class="form-container">
+            <h2 style="text-align: center;">创建新文章</h2>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="title">标题:</label>
+                    <input type="text" id="title" name="title" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="content">内容:</label>
+                    <textarea id="content" name="content" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="category">分类:</label>
+                    <select id="category" name="category">
+                        <option value="tech">技术</option>
+                        <option value="life">生活</option>
+                        <option value="travel">旅行</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="tags">标签 (用逗号分隔):</label>
+                    <input type="text" id="tags" name="tags">
+                </div>
+                
+                <button type="submit">发布文章</button>
+            </form>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2023 ZPY博客. All rights reserved.</p>
+    </footer>
+    
+    <!-- 返回顶部按钮 -->
+    <a href="#" class="back-to-top">↑</a>
+    
+    <script>
+        // 返回顶部按钮显示/隐藏逻辑
+        window.addEventListener('scroll', function() {
+            const backToTopButton = document.querySelector('.back-to-top');
+            if (window.scrollY > 300) {
+                backToTopButton.classList.add('visible');
+            } else {
+                backToTopButton.classList.remove('visible');
+            }
+        });
+        
+        // 平滑滚动到顶部
+        document.querySelector('.back-to-top').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ post.title }}</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+        
+        body { 
+            font-family: 'Noto Sans SC', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); 
+            min-height: 100vh; 
+            animation: fadeIn 0.8s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        header { 
+            background: linear-gradient(90deg, #3498db, #2c3e50);
+            color: white; 
+            padding: 2rem; 
+            text-align: center; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
+            animation: slideDown 0.6s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+        
+        header h1 {
+            margin: 0;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        nav { 
+            background-color: #2c3e50; 
+            padding: 1rem; 
+            text-align: center; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        nav a { 
+            color: white; 
+            text-decoration: none; 
+            margin: 0 0.8rem; 
+            padding: 0.6rem 1.2rem; 
+            border-radius: 20px; 
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        nav a:hover { 
+            background-color: #3498db;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .container { 
+            max-width: 900px; 
+            margin: 2rem auto; 
+            padding: 1rem; 
+        }
+        
+        .content { 
+            background-color: rgba(255, 255, 255, 0.96); 
+            padding: 2.5rem; 
+            border-radius: 15px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 0.7s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        h2, h3 {
+            color: #2c3e50;
+            padding-bottom: 0.8rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #3498db;
+            display: inline-block;
+        }
+        
+        .post-header { 
+            margin-bottom: 1.5rem; 
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .post-title { 
+            font-size: 2rem; 
+            margin-bottom: 0.5rem; 
+            color: #2c3e50;
+            font-weight: 700;
+        }
+        
+        .post-meta { 
+            color: #7f8c8d; 
+            margin-bottom: 1rem; 
+        }
+        
+        .post-meta a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        
+        .post-meta a:hover {
+            text-decoration: underline;
+        }
+        
+        .post-content { 
+            line-height: 1.8; 
+            margin-bottom: 2rem; 
+            border: 1px solid #e0e0e0;
+            padding: 25px; 
+            background-color: #fff;
+            border-radius: 10px; 
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            color: #34495e;
+        }
+        
+        .post-tags { 
+            margin-bottom: 2rem; 
+        }
+        
+        .post-tags a { 
+            color: #2c3e50; 
+            text-decoration: none; 
+            margin-right: 0.5rem; 
+            background-color: #edf2f7; 
+            padding: 0.4rem 0.8rem; 
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .post-tags a:hover {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .post-actions { 
+            display: flex; 
+            gap: 1rem; 
+            margin-bottom: 2rem; 
+        }
+        
+        .action-btn { 
+            background-color: #f8f9fa; 
+            border: none; 
+            padding: 0.7rem 1.2rem; 
+            border-radius: 30px; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .action-btn.liked { 
+            color: #e74c3c; 
+            background-color: #fff5f5;
+        }
+        
+        .action-btn.collected { 
+            color: #f39c12; 
+            background-color: #fff9db;
+        }
+        
+        .action-btn.edit { 
+            background: linear-gradient(90deg, #3498db, #2c3e50);
+            color: white; 
+        }
+        
+        .action-btn.delete { 
+            background: linear-gradient(90deg, #e74c3c, #c0392b);
+            color: white; 
+        }
+        
+        .comments { 
+            margin-top: 2rem; 
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        
+        .comment { 
+            border-bottom: 1px solid #eee; 
+            padding: 1.5rem 0; 
+        }
+        
+        .comment:last-child {
+            border-bottom: none;
+        }
+        
+        .comment-author { 
+            font-weight: 600; 
+            color: #2c3e50;
+        }
+        
+        .comment-content { 
+            margin: 0.8rem 0; 
+            color: #34495e;
+        }
+        
+        .comment-date { 
+            color: #7f8c8d; 
+            font-size: 0.85rem; 
+        }
+        
+        .comment-form { 
+            margin-top: 2rem; 
+            padding-top: 1rem;
+        }
+        
+        .comment-form textarea { 
+            width: 100%; 
+            padding: 1rem; 
+            border: 1px solid #ddd; 
+            border-radius: 8px;
+            font-family: 'Noto Sans SC', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: border-color 0.3s;
+        }
+        
+        .comment-form textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        
+        .comment-form button { 
+            margin-top: 1rem; 
+            background: linear-gradient(90deg, #3498db, #2c3e50);
+            color: white; 
+            border: none; 
+            padding: 0.8rem 1.5rem; 
+            border-radius: 5px; 
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .comment-form button:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .related-posts { 
+            margin-top: 2rem; 
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        
+        .related-posts h3 { 
+            margin-bottom: 1.5rem; 
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        .related-post { 
+            margin-bottom: 1rem; 
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .related-post:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .related-post a { 
+            color: #2c3e50; 
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .related-post a:hover {
+            color: #3498db;
+        }
+        
+        footer { 
+            background: linear-gradient(90deg, #3498db, #2c3e50); 
+            color: white; 
+            text-align: center; 
+            padding: 1.8rem; 
+            margin-top: 2rem; 
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+        }
+        
+        /* 返回顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: #3498db;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            text-decoration: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            visibility: hidden;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background: #2c3e50;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>欢迎来到ZPY的博客</h1>
+    </header>
+    
+    <nav>
+        <a href="/">🏠 首页</a>
+        <a href="/posts/">📚 文章列表</a>
+        <a href="/about/">ℹ️ 关于</a>
+        <a href="/contact/">📞 联系</a>
+        {% if user.is_authenticated %}
+            <a href="/create/">✍️ 创建文章</a>
+        {% else %}
+            <a href="/login/">🔑 登录</a>
+            <a href="/register/">📝 注册</a>
+        {% endif %}
+    </nav>
+    
+    <div class="container">
+        <article>
+            <div class="post-header">
+                <h1 class="post-title">{{ post.title }}</h1>
+                <div class="post-meta">
+                    <span>作者: ZPY</span> | 
+                    <span>分类: <a href="/category/tech/">技术</a></span> | 
+                    <span>{{ post.created_at|date:"Y-m-d" }}</span>
+                </div>
+            </div>
+            
+            <div class="post-content">
+                <p>{{ post.content }}</p>
+            </div>
+            
+            <div class="post-tags">
+                <a href="/tag/django/">#Django</a>
+                <a href="/tag/python/">#Python</a>
+                <a href="/tag/web/">#Web开发</a>
+            </div>
+            
+            {% if user.is_authenticated and user == post.author %}
+            <div class="post-actions">
+                <a href="{% url 'edit_post' post.id %}" class="action-btn edit">
+                    <span>编辑</span>
+                </a>
+                <a href="{% url 'delete_post' post.id %}" class="action-btn delete">
+                    <span>删除</span>
+                </a>
+            </div>
+            {% endif %}
+            
+            <div class="post-actions">
+                <button id="like-btn" class="action-btn">
+                    <span>👍</span>
+                    <span id="like-count">25</span>
+                </button>
+                <button id="collect-btn" class="action-btn">
+                    <span>⭐</span>
+                    <span id="collect-count">8</span>
+                </button>
+                <button id="share-btn" class="action-btn">
+                    <span>↗️</span>
+                    <span>分享</span>
+                </button>
+            </div>
+        </article>
+        
+        <div class="comments">
+            <h3>评论 (2)</h3>
+            
+            <div class="comment">
+                <div class="comment-author">张三</div>
+                <div class="comment-content">这篇文章写得真好，对我帮助很大！</div>
+                <div class="comment-date">2023-01-16 10:30</div>
+            </div>
+            
+            <div class="comment">
+                <div class="comment-author">李四</div>
+                <div class="comment-content">感谢分享，期待更多Django相关的内容。</div>
+                <div class="comment-date">2023-01-17 14:45</div>
+            </div>
+            
+            <div class="comment-form">
+                <h4>发表评论</h4>
+                <form id="comment-form">
+                    <textarea name="content" placeholder="请输入您的评论..." rows="4" required></textarea>
+                    <button type="submit">提交评论</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="related-posts">
+            <h3>相关文章</h3>
+            <div class="related-post">
+                <a href="#">Python性能优化技巧</a>
+            </div>
+            <div class="related-post">
+                <a href="#">Docker容器化部署实战</a>
+            </div>
+            <div class="related-post">
+                <a href="#">使用Django Channels实现实时通信</a>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2023 ZPY博客. All rights reserved.</p>
+    </footer>
+    
+    <!-- 返回顶部按钮 -->
+    <a href="#" class="back-to-top">↑</a>
+    
+    <script>
+        // 点赞功能
+        document.getElementById('like-btn').addEventListener('click', function() {
+            const likeCount = document.getElementById('like-count');
+            let count = parseInt(likeCount.textContent);
+            
+            if (this.classList.contains('liked')) {
+                // 取消点赞
+                this.classList.remove('liked');
+                likeCount.textContent = count - 1;
+            } else {
+                // 点赞
+                this.classList.add('liked');
+                likeCount.textContent = count + 1;
+                
+                // 如果已收藏，则取消收藏
+                const collectBtn = document.getElementById('collect-btn');
+                if (collectBtn.classList.contains('collected')) {
+                    collectBtn.classList.remove('collected');
+                    const collectCount = document.getElementById('collect-count');
+                    collectCount.textContent = parseInt(collectCount.textContent) - 1;
+                }
+            }
+        });
+        
+        // 收藏功能
+        document.getElementById('collect-btn').addEventListener('click', function() {
+            const collectCount = document.getElementById('collect-count');
+            let count = parseInt(collectCount.textContent);
+            
+            if (this.classList.contains('collected')) {
+                // 取消收藏
+                this.classList.remove('collected');
+                collectCount.textContent = count - 1;
+            } else {
+                // 收藏
+                this.classList.add('collected');
+                collectCount.textContent = count + 1;
+                
+                // 如果已点赞，则取消点赞
+                const likeBtn = document.getElementById('like-btn');
+                if (likeBtn.classList.contains('liked')) {
+                    likeBtn.classList.remove('liked');
+                    const likeCount = document.getElementById('like-count');
+                    likeCount.textContent = parseInt(likeCount.textContent) - 1;
+                }
+            }
+        });
+        
+        // 评论功能
+        document.getElementById('comment-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const content = this.querySelector('textarea').value.trim();
+            if (content) {
+                alert('评论功能在演示中，实际应用需要后端支持');
+                this.reset();
+            }
+        });
+        
+        // 返回顶部按钮显示/隐藏逻辑
+        window.addEventListener('scroll', function() {
+            const backToTopButton = document.querySelector('.back-to-top');
+            if (window.scrollY > 300) {
+                backToTopButton.classList.add('visible');
+            } else {
+                backToTopButton.classList.remove('visible');
+            }
+        });
+        
+        // 平滑滚动到顶部
+        document.querySelector('.back-to-top').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>

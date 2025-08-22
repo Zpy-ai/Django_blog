@@ -1,0 +1,96 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | ZPY博客管理{% endblock %}
+
+{% block extrahead %}
+<link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+  <a href="{% url 'admin:index' %}">ZPY博客管理后台</a>
+</h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block extrastyle %}
+<style>
+  /* 改进的整体样式 */
+  #header { 
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff; 
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  #branding h1, #branding h1 a:link, #branding h1 a:visited {
+    color: #fff;
+    font-size: 28px;
+    font-weight: bold;
+    margin: 0;
+    padding: 10px 0;
+    text-decoration: none;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+  
+  #branding h1 a:hover {
+    color: #f5dd5d;
+    text-shadow: 0 0 8px rgba(245, 221, 93, 0.5);
+  }
+  
+  #user-tools {
+    color: #f0f0f0;
+    font-size: 14px;
+  }
+  
+  .module h2, .module caption, .inline-group h2 {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-weight: bold;
+  }
+  
+  div.breadcrumbs {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #e0e0e0;
+    font-size: 14px;
+  }
+  
+  /* 改进的logo样式 */
+  #branding h1:before {
+    content: "";
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    background: url('{% static "images/favicon.ico" %}') no-repeat center center;
+    background-size: 48px 48px;
+    margin-right: 15px;
+    vertical-align: middle;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+  
+  /* 添加一些额外的视觉改进 */
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  a:link, a:visited {
+    color: #667eea;
+  }
+  
+  a:hover {
+    color: #764ba2;
+  }
+  
+  .button, input[type=submit], input[type=button], .submit-row input, a.button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+  }
+  
+  .button:hover, input[type=submit]:hover, input[type=button]:hover, .submit-row input:hover, a.button:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  }
+</style>
+{% endblock %}
