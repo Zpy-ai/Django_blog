@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户登录</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh; }
+        header { background: linear-gradient(90deg, #333 0%, #222 100%); color: white; padding: 1.5rem; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        nav { background-color: #444; padding: 1rem; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        nav a { color: white; text-decoration: none; margin: 0 1rem; padding: 0.5rem 1rem; border-radius: 3px; transition: background-color 0.3s; }
+        nav a:hover { background-color: #666; }
+        .container { max-width: 900px; margin: 2rem auto; padding: 1rem; }
+        .form-container { background-color: rgba(255, 255, 255, 0.9); padding: 2.5rem; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); backdrop-filter: blur(10px); }
+        .login-header { text-align: center; margin-bottom: 2rem; }
+        .login-title { font-size: 2rem; color: #333; }
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; color: #333; }
+        .form-group input { width: 100%; padding: 0.8rem; border: 1px solid #ccc; border-radius: 3px; box-sizing: border-box; }
+        .form-group input:focus { border-color: #666; outline: none; }
+        .btn { width: 100%; padding: 1rem; background-color: #333; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 1rem; }
+        .btn:hover { background-color: #555; }
+        .error-message { color: #d32f2f; background-color: #ffebee; padding: 0.8rem; border-radius: 3px; margin-bottom: 1rem; display: none; }
+        .links { text-align: center; margin-top: 1rem; }
+        .links a { color: #333; text-decoration: none; }
+        .links a:hover { text-decoration: underline; }
+        footer { background: linear-gradient(90deg, #333 0%, #222 100%); color: white; text-align: center; padding: 1.5rem; margin-top: 2rem; box-shadow: 0 -2px 10px rgba(0,0,0,0.2); }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>欢迎来到ZPY的博客</h1>
+    </header>
+    
+    <nav>
+        <a href="/">首页</a>
+        <a href="/posts/">文章列表</a>
+        <a href="/about/">关于</a>
+        <a href="/contact/">联系</a>
+        <a href="/login/">登录</a>
+        <a href="/register/">注册</a>
+    </nav>
+    
+    <div class="container">
+        <div class="login-header">
+            <h2 class="login-title">用户登录</h2>
+        </div>
+        
+        {% if error %}
+        <div id="error-message" class="error-message" style="display: block;">
+            {{ error }}
+        </div>
+        {% endif %}
+        
+        <form id="login-form" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">用户名</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">密码</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            
+            <button type="submit" class="btn">登录</button>
+        </form>
+        
+        <div class="links">
+            <p>还没有账户？<a href="/register/">立即注册</a></p>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2023 ZPY博客. All rights reserved.</p>
+    </footer>
+</body>
+</html>

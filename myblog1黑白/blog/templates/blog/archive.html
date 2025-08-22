@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文章归档</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh; }
+        header { background: linear-gradient(90deg, #333 0%, #222 100%); color: white; padding: 1.5rem; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        nav { background-color: #444; padding: 1rem; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        nav a { color: white; text-decoration: none; margin: 0 1rem; padding: 0.5rem 1rem; border-radius: 3px; transition: background-color 0.3s; }
+        nav a:hover { background-color: #666; }
+        .container { max-width: 900px; margin: 2rem auto; padding: 1rem; }
+        .content { background-color: rgba(255, 255, 255, 0.9); padding: 2.5rem; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); backdrop-filter: blur(10px); }
+        .archive-year { margin: 2rem 0; }
+        .archive-year h3 { color: #333; border-bottom: 2px solid #333; padding-bottom: 0.5rem; }
+        .archive-month { margin: 1rem 0; }
+        .archive-month h4 { color: #666; margin-bottom: 0.5rem; }
+        .archive-post { margin: 0.5rem 0; padding-left: 1rem; border-left: 3px solid #333; }
+        .archive-post a { color: #333; text-decoration: none; }
+        .archive-post a:hover { color: #666; }
+        .archive-post .post-date { color: #999; font-size: 0.9rem; margin-left: 0.5rem; }
+        footer { background: linear-gradient(90deg, #333 0%, #222 100%); color: white; text-align: center; padding: 1.5rem; margin-top: 2rem; box-shadow: 0 -2px 10px rgba(0,0,0,0.2); }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>欢迎来到ZPY的博客</h1>
+    </header>
+    
+    <nav>
+        <a href="/">首页</a>
+        <a href="/posts/">文章列表</a>
+        <a href="/about/">关于</a>
+        <a href="/contact/">联系</a>
+        {% if user.is_authenticated %}
+            <a href="/profile/">个人主页</a>
+            <a href="/create/">创建文章</a>
+        {% else %}
+            <a href="/login/">登录</a>
+            <a href="/register/">注册</a>
+        {% endif %}
+    </nav>
+    
+    <div class="container">
+        <div class="content">
+            <h2>文章归档</h2>
+            
+            <div class="archive-year">
+                <h3>2023年</h3>
+                
+                <div class="archive-month">
+                    <h4>12月</h4>
+                    <div class="archive-post">
+                        <a href="#">Django性能优化技巧</a>
+                        <span class="post-date">2023-12-15</span>
+                    </div>
+                    <div class="archive-post">
+                        <a href="#">使用Docker部署Web应用</a>
+                        <span class="post-date">2023-12-08</span>
+                    </div>
+                </div>
+                
+                <div class="archive-month">
+                    <h4>11月</h4>
+                    <div class="archive-post">
+                        <a href="#">Python异步编程入门</a>
+                        <span class="post-date">2023-11-25</span>
+                    </div>
+                    <div class="archive-post">
+                        <a href="#">数据库索引优化实践</a>
+                        <span class="post-date">2023-11-12</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="archive-year">
+                <h3>2022年</h3>
+                
+                <div class="archive-month">
+                    <h4>10月</h4>
+                    <div class="archive-post">
+                        <a href="#">RESTful API设计最佳实践</a>
+                        <span class="post-date">2022-10-20</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2023 ZPY博客. All rights reserved.</p>
+    </footer>
+</body>
+</html>

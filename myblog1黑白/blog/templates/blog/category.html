@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>分类: 技术</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh; }
+        header { background: linear-gradient(90deg, #333 0%, #222 100%); color: white; padding: 1.5rem; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        nav { background-color: #444; padding: 1rem; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        nav a { color: white; text-decoration: none; margin: 0 1rem; padding: 0.5rem 1rem; border-radius: 3px; transition: background-color 0.3s; }
+        nav a:hover { background-color: #666; }
+        .container { max-width: 900px; margin: 2rem auto; padding: 1rem; }
+        .content { background-color: rgba(255, 255, 255, 0.9); padding: 2.5rem; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); backdrop-filter: blur(10px); }
+        .category-header { margin-bottom: 2rem; }
+        .category-title { font-size: 2rem; margin-bottom: 0.5rem; }
+        .category-description { color: #666; margin-bottom: 1rem; }
+        .post-list { }
+        .post-item { margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid #eee; }
+        .post-title { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .post-title a { color: #333; text-decoration: none; }
+        .post-title a:hover { color: #666; }
+        .post-meta { color: #666; margin-bottom: 1rem; }
+        .post-excerpt { line-height: 1.6; margin-bottom: 1rem; }
+        .post-tags { }
+        .post-tags a { color: #333; text-decoration: none; margin-right: 0.5rem; background-color: #f0f0f0; padding: 0.2rem 0.5rem; border-radius: 3px; }
+        .pagination { display: flex; justify-content: center; margin-top: 2rem; }
+        .pagination a { color: #333; text-decoration: none; padding: 0.5rem 1rem; margin: 0 0.25rem; border: 1px solid #ccc; }
+        .pagination a.active { background-color: #333; color: white; }
+        .pagination a:hover:not(.active) { background-color: #f0f0f0; }
+        footer { background: linear-gradient(90deg, #333 0%, #222 100%); color: white; text-align: center; padding: 1.5rem; margin-top: 2rem; box-shadow: 0 -2px 10px rgba(0,0,0,0.2); }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>欢迎来到ZPY的博客</h1>
+    </header>
+    
+    <nav>
+        <a href="/">首页</a>
+        <a href="/posts/">文章列表</a>
+        <a href="/about/">关于</a>
+        <a href="/contact/">联系</a>
+        {% if user.is_authenticated %}
+            <a href="/create/">创建文章</a>
+        {% else %}
+            <a href="/login/">登录</a>
+            <a href="/register/">注册</a>
+        {% endif %}
+    </nav>
+    
+    <div class="container">
+        <div class="content">
+            <div class="category-header">
+                <h1 class="category-title">分类: 技术</h1>
+                <p class="category-description">关于Web开发、编程语言、框架和工具的技术文章。</p>
+            </div>
+            
+            <div class="post-list">
+                <div class="post-item">
+                    <h2 class="post-title"><a href="#">Django入门教程：从零开始构建Web应用</a></h2>
+                    <div class="post-meta">
+                        <span>作者: ZPY</span> | 
+                        <span>2023-01-15</span> | 
+                        <span>分类: <a href="/category/tech/">技术</a></span>
+                    </div>
+                    <div class="post-excerpt">
+                        <p>本文将带你从零开始学习Django框架，逐步构建一个完整的Web应用程序。我们将涵盖模型设计、视图函数、模板系统和表单处理等核心概念...</p>
+                    </div>
+                    <div class="post-tags">
+                        <a href="/tag/django/">#Django</a>
+                        <a href="/tag/python/">#Python</a>
+                        <a href="/tag/web/">#Web开发</a>
+                    </div>
+                </div>
+                
+                <div class="post-item">
+                    <h2 class="post-title"><a href="#">Python性能优化技巧</a></h2>
+                    <div class="post-meta">
+                        <span>作者: ZPY</span> | 
+                        <span>2023-01-10</span> | 
+                        <span>分类: <a href="/category/tech/">技术</a></span>
+                    </div>
+                    <div class="post-excerpt">
+                        <p>在本文中，我们将探讨几种有效的Python性能优化技巧，帮助你提升代码执行效率。包括使用内置函数、避免重复计算、选择合适的数据结构等...</p>
+                    </div>
+                    <div class="post-tags">
+                        <a href="/tag/python/">#Python</a>
+                        <a href="/tag/optimization/">#优化</a>
+                    </div>
+                </div>
+                
+                <div class="post-item">
+                    <h2 class="post-title"><a href="#">Docker容器化部署实战</a></h2>
+                    <div class="post-meta">
+                        <span>作者: ZPY</span> | 
+                        <span>2023-01-05</span> | 
+                        <span>分类: <a href="/category/tech/">技术</a></span>
+                    </div>
+                    <div class="post-excerpt">
+                        <p>本文将通过一个实际案例，详细介绍如何使用Docker进行应用程序的容器化部署。包括Dockerfile编写、镜像构建、容器运行和网络配置...</p>
+                    </div>
+                    <div class="post-tags">
+                        <a href="/tag/docker/">#Docker</a>
+                        <a href="/tag/deployment/">#部署</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pagination">
+                <a href="#">«</a>
+                <a href="#" class="active">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">»</a>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2023 ZPY博客. All rights reserved.</p>
+    </footer>
+</body>
+</html>
