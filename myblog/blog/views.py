@@ -43,10 +43,20 @@ def post_detail(request, post_id):
     return render(request, 'blog/post_detail.html', {'post': post})
 
 def category(request, category_name):
-    return render(request, 'blog/category.html', {'category_name': category_name})
+    # 获取指定分类下的所有文章，并确保包含作者信息
+    posts = Post.objects.filter(category=category_name).select_related('author').order_by('-created_at')
+    # 对每篇文章的内容进行Markdown处理
+    for post in posts:
+        post.content = markdown.markdown(post.content, extensions=['extra', 'codehilite'])
+    return render(request, 'blog/category.html', {'category_name': category_name, 'posts': posts})
 
 def tag(request, tag_name):
-    return render(request, 'blog/tag.html', {'tag_name': tag_name})
+    # 获取指定标签下的所有文章，并确保包含作者信息
+    posts = Post.objects.filter(tags__name=tag_name).select_related('author').order_by('-created_at')
+    # 对每篇文章的内容进行Markdown处理
+    for post in posts:
+        post.content = markdown.markdown(post.content, extensions=['extra', 'codehilite'])
+    return render(request, 'blog/tag.html', {'tag_name': tag_name, 'posts': posts})
 
 def about(request):
     return render(request, 'blog/about.html')
@@ -55,10 +65,23 @@ def contact(request):
     return render(request, 'blog/contact.html')
 
 def search(request):
-    return render(request, 'blog/search.html')
+    query = request.GET.get('query')
+    posts = []
+    if query:
+        # 搜索标题或内容包含查询词的文章，并确保包含作者信息
+        posts = Post.objects.filter(title__icontains=query).select_related('author').order_by('-created_at')
+        # 对每篇文章的内容进行Markdown处理
+        for post in posts:
+            post.content = markdown.markdown(post.content, extensions=['extra', 'codehilite'])
+    return render(request, 'blog/search.html', {'posts': posts, 'query': query or ''})
 
 def archive(request):
-    return render(request, 'blog/archive.html')
+    # 获取所有文章，按创建时间倒序排列
+    posts = Post.objects.select_related('author').order_by('-created_at')
+    # 对每篇文章的内容进行Markdown处理
+    for post in posts:
+        post.content = markdown.markdown(post.content, extensions=['extra', 'codehilite'])
+    return render(request, 'blog/archive.html', {'posts': posts})
 
 @login_required
 def create_post(request):
@@ -86,6 +109,9 @@ def profile(request):
         
         # 获取该用户发布的所有博客
         user_posts = Post.objects.filter(author=user).order_by('-created_at')
+        # 对每篇文章的内容进行Markdown处理
+        for post in user_posts:
+            post.content = markdown.markdown(post.content, extensions=['extra', 'codehilite'])
         
         # 不允许编辑其他用户的资料
         can_edit = False
@@ -100,6 +126,9 @@ def profile(request):
         
         # 获取当前用户发布的所有博客
         user_posts = Post.objects.filter(author=user).order_by('-created_at')
+        # 对每篇文章的内容进行Markdown处理
+        for post in user_posts:
+            post.content = markdown.markdown(post.content, extensions=['extra', 'codehilite'])
         
         can_edit = True
         

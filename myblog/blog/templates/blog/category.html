@@ -261,54 +261,26 @@
             </div>
             
             <div class="post-list">
+                {% for post in posts %}
                 <div class="post-item">
-                    <h2 class="post-title"><a href="#">Django入门教程：从零开始构建Web应用</a></h2>
+                    <h2 class="post-title"><a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></h2>
                     <div class="post-meta">
-                        <span>作者: ZPY</span> | 
-                        <span>2023-01-15</span> | 
-                        <span>分类: <a href="/category/tech/">技术</a></span>
+                        <span>作者: <a href="{% url 'profile' %}?user_id={{ post.author.id }}">{{ post.author.username }}</a></span> | 
+                        <span>{{ post.created_at|date:"Y-m-d" }}</span> | 
+                        <span>分类: <a href="/category/{{ post.category }}/">{{ post.category }}</a></span>
                     </div>
                     <div class="post-excerpt">
-                        <p>本文将带你从零开始学习Django框架，逐步构建一个完整的Web应用程序。我们将涵盖模型设计、视图函数、模板系统和表单处理等核心概念...</p>
+                        {{ post.content|truncatewords_html:30|safe }}
                     </div>
                     <div class="post-tags">
-                        <a href="/tag/django/">#Django</a>
-                        <a href="/tag/python/">#Python</a>
-                        <a href="/tag/web/">#Web开发</a>
+                        {% for tag in post.tags.all %}
+                        <a href="/tag/{{ tag.name }}/">#{{ tag.name }}</a>
+                        {% endfor %}
                     </div>
                 </div>
-                
-                <div class="post-item">
-                    <h2 class="post-title"><a href="#">Python性能优化技巧</a></h2>
-                    <div class="post-meta">
-                        <span>作者: ZPY</span> | 
-                        <span>2023-01-10</span> | 
-                        <span>分类: <a href="/category/tech/">技术</a></span>
-                    </div>
-                    <div class="post-excerpt">
-                        <p>在本文中，我们将探讨几种有效的Python性能优化技巧，帮助你提升代码执行效率。包括使用内置函数、避免重复计算、选择合适的数据结构等...</p>
-                    </div>
-                    <div class="post-tags">
-                        <a href="/tag/python/">#Python</a>
-                        <a href="/tag/optimization/">#优化</a>
-                    </div>
-                </div>
-                
-                <div class="post-item">
-                    <h2 class="post-title"><a href="#">Docker容器化部署实战</a></h2>
-                    <div class="post-meta">
-                        <span>作者: ZPY</span> | 
-                        <span>2023-01-05</span> | 
-                        <span>分类: <a href="/category/tech/">技术</a></span>
-                    </div>
-                    <div class="post-excerpt">
-                        <p>本文将通过一个实际案例，详细介绍如何使用Docker进行应用程序的容器化部署。包括Dockerfile编写、镜像构建、容器运行和网络配置...</p>
-                    </div>
-                    <div class="post-tags">
-                        <a href="/tag/docker/">#Docker</a>
-                        <a href="/tag/deployment/">#部署</a>
-                    </div>
-                </div>
+                {% empty %}
+                <p>该分类下暂无文章。</p>
+                {% endfor %}
             </div>
             
             <div class="pagination">

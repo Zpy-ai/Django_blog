@@ -149,6 +149,15 @@
         .post-excerpt { 
             line-height: 1.7;
             color: #34495e;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            word-break: break-word;
+            display: -webkit-box;
+            -webkit-line-clamp: 5;
+            line-clamp: 5;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         
         /* Markdown一级标题样式 */

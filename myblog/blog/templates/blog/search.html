@@ -284,38 +284,20 @@
             </form>
             
             <div class="post-list">
+                {% for post in posts %}
                 <div class="post-item">
-                    <a href="#" class="post-title">Django性能优化技巧</a>
-                    <p class="post-excerpt">在这篇文章中，我们将探讨如何优化Django应用的性能，包括数据库查询优化、缓存策略和模板渲染优化等...</p>
-                    <div class="post-meta">发布于 2023-12-15 | 分类: 技术</div>
+                    <a href="{% url 'post_detail' post.id %}" class="post-title">{{ post.title }}</a>
+                    <div class="post-excerpt">{{ post.content|truncatewords_html:30|safe }}</div>
+                    <div class="post-meta">发布于 {{ post.created_at|date:"Y-m-d" }} | 分类: {{ post.category }}</div>
                     <div class="post-tags">
-                        <span>Django</span>
-                        <span>性能优化</span>
-                        <span>Python</span>
+                        {% for tag in post.tags.all %}
+                        <span>{{ tag.name }}</span>
+                        {% endfor %}
                     </div>
                 </div>
-                
-                <div class="post-item">
-                    <a href="#" class="post-title">使用Docker部署Django应用</a>
-                    <p class="post-excerpt">本文将介绍如何使用Docker容器化并部署Django应用，包括构建镜像、配置数据库和设置Nginx反向代理...</p>
-                    <div class="post-meta">发布于 2023-12-08 | 分类: DevOps</div>
-                    <div class="post-tags">
-                        <span>Docker</span>
-                        <span>Django</span>
-                        <span>部署</span>
-                    </div>
-                </div>
-                
-                <div class="post-item">
-                    <a href="#" class="post-title">Django REST Framework入门</a>
-                    <p class="post-excerpt">Django REST Framework是一个强大的工具包，用于构建Web API。本文将带你入门DRF的基本概念和使用方法...</p>
-                    <div class="post-meta">发布于 2023-11-20 | 分类: 后端</div>
-                    <div class="post-tags">
-                        <span>Django</span>
-                        <span>REST API</span>
-                        <span>后端</span>
-                    </div>
-                </div>
+                {% empty %}
+                <p>没有找到与"{{ query }}"相关的文章。</p>
+                {% endfor %}
             </div>
             
             <div class="pagination">
