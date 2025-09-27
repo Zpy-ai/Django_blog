@@ -9,7 +9,7 @@
 </p>
 
 这是一个基于Django开发的个人博客系统，具有文章发布、分类管理、用户评论等功能。
-
+![blog](https://github.com/Zpy-ai/Django_blog/blob/main/images/blog.jpg)
 ## 🌟 功能特点
 
 - 🔐 **用户认证和权限管理** - 完整的用户注册、登录和权限控制系统
